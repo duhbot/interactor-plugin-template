@@ -1,5 +1,6 @@
 package org.duh102.duhbot.consumer_example;
 
+import org.duh102.duhbot.functions.ListeningPlugin;
 import org.duh102.duhbot.functions.ServiceConsumerPlugin;
 import org.duh102.duhbot.functions.ServiceMediator;
 import org.duh102.duhbot.functions.ServiceResponse;
@@ -13,12 +14,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class ServiceConsumerExample extends ListenerAdapter implements ServiceConsumerPlugin {
+public class ServiceConsumerExample extends ListenerAdapter implements ServiceConsumerPlugin, ListeningPlugin {
     public static final String CONSUMER_NAME = "service-consumer-example";
     private Pattern invPattern = Pattern.compile(".inventory([ \t]+" +
             "(?<command>[^ \t]+)([ \t]+(?<extra>.+))?)?");
-    private Pattern changePattern = Pattern.compile("(?<item>\"[^\"]+\"|[^\"]+)"
-            + "([ \t]+(?<count>-?[1-9][0-9]*))?");
+    private Pattern changePattern = Pattern.compile("(?<item>\"[^\"]+\"|[^\" " +
+                    "\t\n]+)([ \t]+(?<count>-?[1-9][0-9]*))?");
     String viewCommand = "view", changeCommand = "change";
     Set<String> commandSet = Set.of(new String[]{viewCommand, changeCommand});
     ServiceMediator mediator = null;
@@ -99,7 +100,7 @@ public class ServiceConsumerExample extends ListenerAdapter implements ServiceCo
             String item = itemIt.next();
             int count = invMap.get(item);
             inventoryList.append(String.format("%s: %d", item, count));
-            if( idx < items.length )
+            if( idx < (items.length-1) )
                 inventoryList.append(", ");
         }
         return inventoryList.toString();
@@ -148,5 +149,21 @@ public class ServiceConsumerExample extends ListenerAdapter implements ServiceCo
             e.printStackTrace();;
             return null;
         }
+    }
+
+    @Override
+    public HashMap<String, String> getHelpFunctions() {
+        HashMap<String, String> helpFuncs = new HashMap<>();
+        helpFuncs.put(".inventory", "Base command, also an alias for " +
+                ".inventory view");
+        helpFuncs.put(".inventory view", "Views your current inventory");
+        helpFuncs.put(".inventory change [item] (count)", "Modify your " +
+                "inventory; count is optional, defaults to 1 (adding 1)");
+        return helpFuncs;
+    }
+
+    @Override
+    public ListenerAdapter getAdapter() {
+        return this;
     }
 }
