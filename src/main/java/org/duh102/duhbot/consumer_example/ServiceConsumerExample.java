@@ -81,7 +81,7 @@ public class ServiceConsumerExample extends ListenerAdapter implements ServiceCo
     }
 
     @Override
-    public void setInteraactionMediator(ServiceMediator serviceMediator) {
+    public void setInteractionMediator(ServiceMediator serviceMediator) {
         this.mediator = serviceMediator;
     }
 

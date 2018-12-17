@@ -5,7 +5,6 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Service Consuming Plugin Template</name>
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -39,12 +38,12 @@
     <dependency>
         <groupId>com.github.duhbot</groupId>
         <artifactId>duhbot</artifactId>
-        <version>master-SNAPSHOT</version>
+        <version>v1.0.5</version>
     </dependency>
     <dependency>
       <groupId>com.github.duhbot</groupId>
       <artifactId>interactive-plugin-template</artifactId>
-      <version>72b33d362e</version>
+      <version>master-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>
